@@ -9,17 +9,20 @@ class APF_Ajax_Handler {
     }
 
     public function filter_products() {
+        // Set the current page from the AJAX request, default to page 1
+        $paged = isset($_POST['paged']) ? $_POST['paged'] : 1;
+
         // Prepare default WooCommerce query arguments
         $args = wc_get_loop_prop('query_args', []);
 
         // If no filters are selected, show all products
-        if (empty($_POST['categories']) && empty($_POST['attributes']) && empty($_POST['min_price']) && empty($_POST['max_price'])) {
-            // Show default WooCommerce product query
+        if (empty($_POST['categories']) && empty($_POST['tags']) && empty($_POST['attributes'])) {
             $args = [
                 'post_type' => 'product',
                 'posts_per_page' => 12,
                 'orderby' => 'date',
                 'order' => 'DESC',
+                'paged' => $paged, // Handle pagination
             ];
         } else {
             // Add filters to the query
@@ -28,6 +31,16 @@ class APF_Ajax_Handler {
                     'taxonomy' => 'product_cat',
                     'field'    => 'slug',
                     'terms'    => $_POST['categories'],
+                    'operator' => 'IN',
+                ];
+            }
+
+            // Add tags filter
+            if (!empty($_POST['tags'])) {
+                $args['tax_query'][] = [
+                    'taxonomy' => 'product_tag',
+                    'field'    => 'slug',
+                    'terms'    => $_POST['tags'],
                     'operator' => 'IN',
                 ];
             }
@@ -42,6 +55,8 @@ class APF_Ajax_Handler {
                     ];
                 }
             }
+
+            $args['paged'] = $paged; // Handle pagination
         }
 
         // Query products
@@ -62,9 +77,36 @@ class APF_Ajax_Handler {
             echo '<p>No products found</p>';
         }
 
+        // Handle pagination
+        $total_pages = $query->max_num_pages;
+        $current_page = $paged;
+        $pagination = '';
+
+        if ($total_pages > 1) {
+            $pagination .= '<div class="apf-pagination">';
+            if ($current_page > 1) {
+                $pagination .= '<a class="apf-pagination-prev" data-page="' . ($current_page - 1) . '" href="#">Previous</a>';
+            }
+
+            for ($i = 1; $i <= $total_pages; $i++) {
+                $pagination .= '<a class="apf-pagination-link" data-page="' . $i . '" href="#">' . $i . '</a>';
+            }
+
+            if ($current_page < $total_pages) {
+                $pagination .= '<a class="apf-pagination-next" data-page="' . ($current_page + 1) . '" href="#">Next</a>';
+            }
+
+            $pagination .= '</div>';
+        }
+
         wp_reset_postdata();
 
-        $response = ob_get_clean();
+        // Return the product grid and pagination data
+        $response = [
+            'products' => ob_get_clean(),
+            'pagination' => $pagination,
+        ];
+
         wp_send_json_success($response);
     }
 }

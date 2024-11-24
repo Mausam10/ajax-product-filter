@@ -64,3 +64,38 @@
         width: calc(100% - 20px);
     }
 }
+
+.apf-pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.apf-pagination a {
+    padding: 5px 10px;
+    margin: 0 5px;
+    text-decoration: none;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.apf-pagination a:hover {
+    background-color: #e0e0e0;
+}
+
+.apf-pagination .apf-pagination-prev,
+.apf-pagination .apf-pagination-next {
+    font-weight: bold;
+}
+
+.apf-pagination .apf-pagination-link.active {
+    background-color: #0073aa;
+    color: white;
+}
+
+.apf-pagination .apf-pagination-prev.disabled,
+.apf-pagination .apf-pagination-next.disabled {
+    background-color: #f1f1f1;
+    color: #ccc;
+    cursor: not-allowed;
+}

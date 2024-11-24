@@ -3,7 +3,7 @@
  * Plugin Name: AJAX Product Filter for WooCommerce (Sidebar Edition)
  * Description: Advanced AJAX product filter with sidebar and checkboxes for WooCommerce.
  * Version: 1.1
- * Author: m100
+ * Author: mausam10
  */
 
 if (!defined('ABSPATH')) exit;
@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) exit;
 require_once plugin_dir_path(__FILE__) . 'includes/class-apf-ajax-handler.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-apf-shortcode.php';
 
-// Enqueue styles and scripts
+// Enqueue scripts
 function apf_enqueue_assets() {
     if (is_shop() || is_product_category()) {
         wp_enqueue_style('apf-style', plugin_dir_url(__FILE__) . 'assets/css/style.css');

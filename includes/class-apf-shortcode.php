@@ -11,7 +11,7 @@ class APF_Shortcode {
         ob_start();
         ?>
         <aside id="apf-sidebar-filters">
-            <h3>Filter by Categories</h3>
+            <h3>Shop By Category</h3>
             <ul>
                 <?php
                 $categories = get_terms(['taxonomy' => 'product_cat', 'hide_empty' => true]);
@@ -25,8 +25,23 @@ class APF_Shortcode {
                 }
                 ?>
             </ul>
-
-            <h3>Filter by Attributes</h3>
+<br>
+            <h3>Shop By Tags</h3>
+            <ul>
+                <?php
+                $tags = get_terms(['taxonomy' => 'product_tag', 'hide_empty' => true]);
+                foreach ($tags as $tag) {
+                    echo '<li>
+                            <label>
+                                <input type="checkbox" class="apf-tag" value="' . esc_attr($tag->slug) . '">
+                                ' . esc_html($tag->name) . '
+                            </label>
+                          </li>';
+                }
+                ?>
+            </ul>
+<br>
+            <h3>Shop By Attributes</h3>
             <?php
             $attributes = wc_get_attribute_taxonomies();
             foreach ($attributes as $attribute) {
