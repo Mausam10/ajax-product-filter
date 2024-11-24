@@ -46,10 +46,7 @@ class APF_Shortcode {
                 }
             }
             ?>
-
-            <button id="apf-apply-filters">Apply Filters</button>
         </aside>
-        <div id="apf-products"></div>
         <?php
         return ob_get_clean();
     }

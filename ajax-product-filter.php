@@ -23,3 +23,10 @@ function apf_enqueue_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'apf_enqueue_assets');
+
+//enqueue the styles
+function apf_enqueue_styles() {
+    wp_enqueue_style('apf-style', plugin_dir_url(__FILE__) . 'assets/css/style.css');
+}
+add_action('wp_enqueue_scripts', 'apf_enqueue_styles');
+

@@ -12,34 +12,36 @@ class APF_Ajax_Handler {
         // Prepare default WooCommerce query arguments
         $args = wc_get_loop_prop('query_args', []);
 
-        // Custom arguments for filtering
-        if (!empty($_POST['categories'])) {
-            $args['tax_query'][] = [
-                'taxonomy' => 'product_cat',
-                'field'    => 'slug',
-                'terms'    => $_POST['categories'],
-                'operator' => 'IN',
+        // If no filters are selected, show all products
+        if (empty($_POST['categories']) && empty($_POST['attributes']) && empty($_POST['min_price']) && empty($_POST['max_price'])) {
+            // Show default WooCommerce product query
+            $args = [
+                'post_type' => 'product',
+                'posts_per_page' => 12,
+                'orderby' => 'date',
+                'order' => 'DESC',
             ];
-        }
-
-        if (!empty($_POST['attributes'])) {
-            foreach ($_POST['attributes'] as $attribute => $values) {
+        } else {
+            // Add filters to the query
+            if (!empty($_POST['categories'])) {
                 $args['tax_query'][] = [
-                    'taxonomy' => 'pa_' . $attribute,
+                    'taxonomy' => 'product_cat',
                     'field'    => 'slug',
-                    'terms'    => $values,
+                    'terms'    => $_POST['categories'],
                     'operator' => 'IN',
                 ];
             }
-        }
 
-        if (!empty($_POST['min_price']) && !empty($_POST['max_price'])) {
-            $args['meta_query'][] = [
-                'key' => '_price',
-                'value' => [floatval($_POST['min_price']), floatval($_POST['max_price'])],
-                'compare' => 'BETWEEN',
-                'type' => 'DECIMAL',
-            ];
+            if (!empty($_POST['attributes'])) {
+                foreach ($_POST['attributes'] as $attribute => $values) {
+                    $args['tax_query'][] = [
+                        'taxonomy' => 'pa_' . $attribute,
+                        'field'    => 'slug',
+                        'terms'    => $values,
+                        'operator' => 'IN',
+                    ];
+                }
+            }
         }
 
         // Query products
