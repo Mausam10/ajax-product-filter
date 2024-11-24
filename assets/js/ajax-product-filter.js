@@ -16,9 +16,6 @@ jQuery(document).ready(function ($) {
             attributes[attribute].push(value);
         });
 
-        const minPrice = $('#apf-min-price').val();
-        const maxPrice = $('#apf-max-price').val();
-
         $.ajax({
             url: apf_ajax.ajax_url,
             type: 'POST',
@@ -26,11 +23,11 @@ jQuery(document).ready(function ($) {
                 action: 'apf_filter_products',
                 categories,
                 attributes,
-                min_price: minPrice,
-                max_price: maxPrice,
             },
             success: function (response) {
-                $('#apf-products').html(response);
+                if (response.success) {
+                    $('.products').html(response.data); // Replace WooCommerce product grid
+                }
             },
         });
     }
