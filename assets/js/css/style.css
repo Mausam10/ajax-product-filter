@@ -1,0 +1,24 @@
+#apf-sidebar-filters {
+    width: 25%;
+    float: left;
+    margin-right: 20px;
+}
+
+#apf-products {
+    width: 70%;
+    float: left;
+}
+
+#apf-sidebar-filters ul {
+    list-style: none;
+    padding: 0;
+}
+
+#apf-sidebar-filters li {
+    margin-bottom: 10px;
+}
+
+#apf-products .product {
+    width: calc(33.333% - 20px);
+    margin-bottom: 20px;
+}
