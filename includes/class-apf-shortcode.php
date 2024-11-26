@@ -11,7 +11,7 @@ class APF_Shortcode {
         ob_start();
         ?>
         <aside id="apf-sidebar-filters">
-            <h3>Shop By Category</h3>
+            <h3>Filter by Categories</h3>
             <ul>
                 <?php
                 $categories = get_terms(['taxonomy' => 'product_cat', 'hide_empty' => true]);
@@ -25,8 +25,8 @@ class APF_Shortcode {
                 }
                 ?>
             </ul>
-<br>
-            <h3>Shop By Tags</h3>
+
+            <h3>Filter by Tags</h3>
             <ul>
                 <?php
                 $tags = get_terms(['taxonomy' => 'product_tag', 'hide_empty' => true]);
@@ -40,8 +40,8 @@ class APF_Shortcode {
                 }
                 ?>
             </ul>
-<br>
-            <h3>Shop By Attributes</h3>
+
+            <h3>Filter by Attributes</h3>
             <?php
             $attributes = wc_get_attribute_taxonomies();
             foreach ($attributes as $attribute) {
@@ -61,6 +61,9 @@ class APF_Shortcode {
                 }
             }
             ?>
+
+            <!-- Remove All Filters Button -->
+            <button id="apf-remove-all-filters" class="apf-remove-all-filters" style="display:none;">Remove All Filters</button>
         </aside>
         <?php
         return ob_get_clean();
